@@ -18,8 +18,8 @@ const express = require('express'),
     next();
     });
 
-app.use(express.static('./Hello360/build'));
-app.use('/static_assets', express.static('./Hello360/static_assets'));
+app.use(express.static('./Front-End/build'));
+app.use('/static_assets', express.static('./Front-End/static_assets'));
 
 
 let p =[];
