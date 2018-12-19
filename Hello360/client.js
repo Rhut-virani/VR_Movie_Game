@@ -29,6 +29,10 @@ function init(bundle, parent, options = {}) {
 
   );
 
+  // r360.renderToLocation(
+  //   r360.createRoot('React3DView'),
+  //   r360.getDefaultLocation(),
+  // );
 
   // in client.js
   const player = r360.compositor.createVideoPlayer('winnerplayer');

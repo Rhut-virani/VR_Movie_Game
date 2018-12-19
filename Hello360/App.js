@@ -128,8 +128,6 @@ export default class App extends React.Component {
   componentDidMount (){
     this.spin();     
     setTimeout(() => {
-    // additional url for developement
-
       // fetch('http://192.168.0.18:8080/movie')
       fetch(baseUrl + '/movie')
       // fetch('http://10.32.3.61:8080/movie')
@@ -163,7 +161,6 @@ export default class App extends React.Component {
     let url = baseUrl + '/currentmovie';
     // let url = 'http://192.168.0.18:8080/currentmovie';
     // let url = '/currentmovie';
-    
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({count : this.state.currentMovie}), // data can be `string` or {object}!

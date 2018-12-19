@@ -18,8 +18,8 @@ const express = require('express'),
     next();
     });
 
-app.use(express.static('./Front-End/build'));
-app.use('/static_assets', express.static('./Front-End/static_assets'));
+app.use(express.static('./Hello360/build'));
+app.use('/static_assets', express.static('./Hello360/static_assets'));
 
 
 let p =[];
@@ -36,6 +36,7 @@ app.post('/currentmovie', (req,res)=>{
     currentmovie = (count<140)?parseInt(count) + 1 : 0;
     console.log(currentmovie);
     res.status(200).send((currentmovie).toString());
+
 })
 
 apiCallFunction = (i , j) =>{
