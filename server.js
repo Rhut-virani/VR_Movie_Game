@@ -18,14 +18,15 @@ const express = require('express'),
     next();
     });
 
-app.use(express.static('./Hello360/build'));
-app.use('/static_assets', express.static('./Hello360/static_assets'));
+app.use(express.static('./Front-End/build'));
+app.use('/static_assets', express.static('./Front-End/static_assets'));
 
 
 let p =[];
 let moviedata= [];
 let movieListArray = [79545,79546,79543,79547];
 let currentmovie = 0;
+
 app.get('/movie', (req, res)=>{
         res.send(moviedata);
 })
