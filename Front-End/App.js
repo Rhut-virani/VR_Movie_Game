@@ -18,6 +18,7 @@ import Gamewinner from './Gamewinner';
 import GameOver from './GameOver';
 // import Deathstar from './Deathstar';
 import TimerCountdown from 'react-native-timer-countdown';
+import GazeButton from "react-360-gaze-button";
 
 const {AudioModule} = NativeModules;
 
@@ -42,6 +43,7 @@ export default class App extends React.Component {
       correctAns: false,
       wrongAns: false,
       timeout: false,
+      selectedGenre = null,
     });
     this.count = -1000; // counter variable for scoring 
 }
@@ -53,9 +55,8 @@ export default class App extends React.Component {
 // wrong ans reduces the times and score .....
   setGazed = (value) => {
     if(value){
-        let url = baseUrl + '/currentmovie';
-        // let url = 'http://192.168.0.18:8080/currentmovie';
-        // let url = '/currentmovie';
+        // let url = baseUrl + '/currentmovie';
+        let url = 'http://192.168.0.18:8080/currentmovie';
 
 // Send the currentmovie counter value to backend to temp store 
 // so even on refresh the currentmovie is at the same value and only changes on 
@@ -128,8 +129,8 @@ export default class App extends React.Component {
   componentDidMount (){
     this.spin();     
     setTimeout(() => {
-      // fetch('http://192.168.0.18:8080/movie')
-      fetch(baseUrl + '/movie')
+      fetch('http://192.168.0.18:8080/movie')
+      // fetch(baseUrl + '/movie')
       // fetch('http://10.32.3.61:8080/movie')
       // fetch('/movie')
       .then((response)=>{
@@ -137,7 +138,9 @@ export default class App extends React.Component {
       })
       .then( data =>{
         // Here's a list of repos!
-        console.log(data);
+        for(let i in data){
+          console.log("hwllo" ,i);
+        }
         this.setState({
           movie : data,
         })
@@ -146,6 +149,7 @@ export default class App extends React.Component {
           console.log(error);
       });
     }, 10000);
+    
   }
 
 
@@ -158,8 +162,8 @@ export default class App extends React.Component {
   // Function which runs on completion of timer and reduces the score 
   // and gets new movie from the state
   complete=()=>{
-    let url = baseUrl + '/currentmovie';
-    // let url = 'http://192.168.0.18:8080/currentmovie';
+    // let url = baseUrl + '/currentmovie';
+    let url = 'http://192.168.0.18:8080/currentmovie';
     // let url = '/currentmovie';
     fetch(url, {
       method: 'POST',
@@ -249,7 +253,7 @@ render() {
     
   // checking if user has won by getting a winning score
   // if yes then showing the winning component
-    if(this.state.score > 200){
+    if(this.state.score > 300){
       AudioModule.stopEnvironmental();
       return(
         <Gamewinner resetgame={this.resetgame}/>
@@ -319,6 +323,43 @@ render() {
 
           </View>
         );
+      }
+      else if (moviestate && !selectedGenre){
+        <View>
+          <Text>Select A Genre of Choice</Text>
+          <GazeButton
+              duration={3000}
+              onClick={()=>{this.props.setGazed()}}
+              style= {styles.v}
+              render={(remainingTime, isGazed) => (
+                <Text style={styles.ans}>Drama</Text>
+              )}
+          />
+          <GazeButton
+            duration={3000}
+            onClick={()=>{this.props.setGazed()}}
+            style= {styles.v}
+            render={(remainingTime, isGazed) => (
+              <Text style={styles.ans}>Action</Text>
+            )}
+          />
+          <GazeButton
+            duration={3000}
+            onClick={()=>{this.props.setGazed()}}
+            style= {styles.v}
+            render={(remainingTime, isGazed) => (
+              <Text style={styles.ans}>Romance</Text>
+            )}
+          />
+          <GazeButton
+            duration={3000}
+            onClick={()=>{this.props.setGazed()}}
+            style= {styles.v}
+            render={(remainingTime, isGazed) => (
+              <Text style={styles.ans}>Comedy</Text>
+            )}
+          />
+        </View>
       }
 
   // loading animation till the data loads

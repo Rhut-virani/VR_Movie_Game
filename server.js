@@ -22,17 +22,19 @@ app.use(express.static('./Front-End/build'));
 app.use('/static_assets', express.static('./Front-End/static_assets'));
 
 
-let p =[];
-let moviedata= [];
-let movieListArray = [79545,79546,79543,79547];
-let currentmovie = 0;
+const p =[];
+const moviedata= [];
+const movieListArray = [79545,79546,79543,79547];
+const currentmovie = 0;
+const filtered = {};
+
 
 app.get('/movie', (req, res)=>{
-        res.send(moviedata);
+    res.send(filtered);
 })
 
 app.post('/currentmovie', (req,res)=>{
-    let count =req.body.count;
+    let count = req.body.count;
 
     currentmovie = (count<140)?parseInt(count) + 1 : 0;
     console.log(currentmovie);
@@ -60,7 +62,6 @@ apiCallFunction = (i , j) =>{
                 return Promise.all(mp);
             })
             .then (results=>{
-                // console.log(results.data);
                 let movieDetailsArray = results.map((element)=>{
                     return element.data;
                 })
@@ -69,6 +70,20 @@ apiCallFunction = (i , j) =>{
             .catch(error=>{
                 console.log(error);
             })
+}
+const scrapeGenre =  () => {
+    for (let e of moviedata){
+        for (let i in e.genres){
+            if(!filtered[e.genres[i]["name"]]){
+                filtered[e.genres[i]["name"]] = [e];
+            }
+            else{
+                filtered[e.genres[i]["name"]].push(e);
+            }
+        }
+    }
+    console.log("filterd", filtered);
+
 }
 
 let count = 0
@@ -83,6 +98,7 @@ let timer = setInterval(()=>{
         count++;
     }
     else{
+        scrapeGenre();
         clearInterval(timer);
     }
 },10000)

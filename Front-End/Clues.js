@@ -23,11 +23,11 @@ export default class Clues extends React.Component {
 
 // Function that handles the animation for right answer, wrong answer and timeout 
   animateImage=()=>{                           // Start the animation
-      this.state.bounceValue.setValue(2);     // Start large
+      this.state.bounceValue.setValue(1.1);     // Start large
       Animated.spring(                          // Base: spring, decay, timing
         this.state.bounceValue,                 // Animate `bounceValue`
         {
-          toValue: 0.8,                       // Animate to smaller size
+          toValue: 1,                       // Animate to smaller size
           friction: 1,                          // Bouncier spring
         }
       ).start();     
@@ -140,7 +140,6 @@ export default class Clues extends React.Component {
                         <Text style={styles.ans}>{answerOption1}</Text>
                       )}
                   />
-              
                   <GazeButton
                           duration={3000}
                           onClick={()=>{this.props.setGazed(answerValue2)}}
