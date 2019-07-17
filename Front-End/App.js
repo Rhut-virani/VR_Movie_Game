@@ -18,8 +18,7 @@ import TimerCountdown from 'react-native-timer-countdown';
 const {AudioModule} = NativeModules;
 
 
-//let IP_ADDRESS = '10.32.3.61';
-// let baseUrl = window.location.hostname.includes('localhost') ? ("http://localhost:8080") : '';
+
 let baseUrl = "http://localhost:8080";
 
 // declaring the component 
@@ -50,10 +49,7 @@ export default class App extends React.Component {
 // wrong ans reduces the times and score .....
   setGazed = (value) => {
     if(value){
-        let url = baseUrl + '/currentmovie';
-        // let url = 'http://192.168.0.18:8080/currentmovie';
-        // let url = '/currentmovie';
-
+      const url = baseUrl + '/currentmovie';
 // Send the currentmovie counter value to backend to temp store 
 // so even on refresh the currentmovie is at the same value and only changes on 
 // right or wrong Ans.
@@ -123,25 +119,22 @@ export default class App extends React.Component {
   componentDidMount (){
     this.spin();     
     setTimeout(() => {
-      // fetch('http://192.168.0.18:8080/movie')
       fetch(baseUrl + '/movie')
-      // fetch('http://10.32.3.61:8080/movie')
-      // fetch('/movie')
-      .then((response)=>{
-          console.log()
-          return response.json();
-      })
-      .then( data =>{
-        // Here's a list of repos!
-        console.log(data);
-        this.setState({
-          movie : data,
+        .then((response)=>{
+            console.log()
+            return response.json();
         })
-      })
-      .catch(error=>{
-          console.log(error);
-      });
-    }, 1000);
+        .then( data =>{
+          // Here's a list of repos!
+          console.log(data);
+          this.setState({
+            movie : data,
+          })
+        })
+        .catch(error=>{
+            console.log(error);
+        });
+    }, 5000);
   }
 
   // Function to make a counter variable to use for scoring 
@@ -154,8 +147,6 @@ export default class App extends React.Component {
   // and gets new movie from the state
   complete=()=>{
     let url = baseUrl + '/currentmovie';
-    // let url = 'http://192.168.0.18:8080/currentmovie';
-    // let url = '/currentmovie';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({count : this.state.currentMovie}), // data can be `string` or {object}!

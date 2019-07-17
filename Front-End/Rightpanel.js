@@ -19,7 +19,7 @@ export default class Rightpanel extends React.Component {
       let imgJSX = img.map((ele,ind)=>{
         return(
           (ele)? 
-            <Image source={{uri: castImages[ind]}} style={styles.vb}/> :
+            <Image key={ind} source={{uri: castImages[ind]}} style={styles.vb}/> :
                 <GazeButton
                 key={ind}
                 duration={3000}
