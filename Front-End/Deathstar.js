@@ -1,13 +1,9 @@
 import * as React from 'react';
 import {
     asset, 
-    Image, 
-    StyleSheet, 
     View,  
-    Text,
 } from 'react-360';
 import Entity from 'Entity';
-import GazeButton from "react-360-gaze-button";
 
 export default class Deathstar extends React.Component {
       

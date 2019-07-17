@@ -1,19 +1,17 @@
 import * as React from 'react';
-import {asset,  Image, StyleSheet, Text, View,} from 'react-360';
-import Entity from 'Entity';
+import {Image, StyleSheet, Text, View,} from 'react-360';
 import GazeButton from "react-360-gaze-button";
 
 export default class Leftpanel extends React.Component {
 
   render() {
-    //gettng the image paths from the listof movies  
+    //gettng the image paths from the list of movies  
     let imgurl = (this.props.moviestate.images.backdrops[0])?this.props.moviestate.images.backdrops[0].file_path : this.props.moviestate.images.posters[0].file_path
     let posterUrl = 'http://image.tmdb.org/t/p/w780' + imgurl;
 
     return (
       <View style={styles.wrapper}>
         <View style={styles.imageWrapper}>
-        
       {/* if the user has made the click on the pooster image then show the poster or show the 
       button and text covering the image */}
           {(this.props.poster)? 
@@ -62,7 +60,6 @@ const styles = StyleSheet.create({
     margin: 5, 
   },
   vb:{
-    // backgroundColor: '#4CB963',
     backgroundColor: '#191919',
     justifyContent: 'center',
     width:1000, 

@@ -34,8 +34,7 @@ app.get('/movie', (req, res)=>{
 app.post('/currentmovie', (req,res)=>{
     let count =req.body.count;
 
-    currentmovie = (count<140)?parseInt(count) + 1 : 0;
-    console.log(currentmovie);
+    currentmovie = (count<moviedata.length)?parseInt(count) + 1 : 0;
     res.status(200).send((currentmovie).toString());
 
 })
@@ -74,12 +73,12 @@ apiCallFunction = (i , j) =>{
 let count = 0
 let timer = setInterval(()=>{
     console.log('running with count =', count);
-    if(count < 4){
+    if(count < 2){
     apiCallFunction(count , 1);
     count++;
     }
-    else if (count < 8) {
-        apiCallFunction(count-4, 2)
+    else if (count < 4) {
+        apiCallFunction(count-2, 2)
         count++;
     }
     else{

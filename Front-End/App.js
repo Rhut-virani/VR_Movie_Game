@@ -1,13 +1,10 @@
 import React from 'react';
 import {
-  AppRegistry,
   asset,
   StyleSheet,
   Animated,
   Text,
   View,
-  Image,
-  VrButton,
   Environment,
   NativeModules,
 } from 'react-360';
@@ -16,14 +13,14 @@ import Leftpanel from './Leftpanel';
 import Rightpanel from './Rightpanel';
 import Gamewinner from './Gamewinner';
 import GameOver from './GameOver';
-// import Deathstar from './Deathstar';
 import TimerCountdown from 'react-native-timer-countdown';
 
 const {AudioModule} = NativeModules;
 
 
 //let IP_ADDRESS = '10.32.3.61';
-let baseUrl = window.location.hostname.includes('localhost') ? ("http://localhost:8080") : '';
+// let baseUrl = window.location.hostname.includes('localhost') ? ("http://localhost:8080") : '';
+let baseUrl = "http://localhost:8080";
 
 // declaring the component 
 export default class App extends React.Component {
@@ -36,7 +33,7 @@ export default class App extends React.Component {
       currentMovie: 0,
       spinValue : new Animated.Value(0),
       time : 60000,
-      score: 200,
+      score: 150,
       plotValue: false,
       img:[false,false,false,false,false,false],  // state props for Cast images and movie poster 
       correctAns: false,
@@ -109,7 +106,6 @@ export default class App extends React.Component {
     }
   };
 
-
   // Spin function for Loading animation 
   spin=()=>{
       this.state.spinValue.setValue(0)
@@ -122,7 +118,6 @@ export default class App extends React.Component {
       ).start(() => this.spin())
   }
 
-
 // On Component mount the Loading Spin animation runs 
 // and on a 10 sec Timeout the fetch function runs 
   componentDidMount (){
@@ -133,6 +128,7 @@ export default class App extends React.Component {
       // fetch('http://10.32.3.61:8080/movie')
       // fetch('/movie')
       .then((response)=>{
+          console.log()
           return response.json();
       })
       .then( data =>{
@@ -145,9 +141,8 @@ export default class App extends React.Component {
       .catch(error=>{
           console.log(error);
       });
-    }, 10000);
+    }, 1000);
   }
-
 
   // Function to make a counter variable to use for scoring 
   onTick = () =>{
@@ -211,7 +206,6 @@ export default class App extends React.Component {
     })
   }
 
-
 // function that shows the poster image on user clicks and reduces 100 points from the user score.
   posterPointHandler = ()=>{
     this.setState({
@@ -224,7 +218,7 @@ export default class App extends React.Component {
 // function that resets the game values to default values 
 // also resets the background image to black to a 360 image
   resetgame = ()=>{
-    Environment.setBackgroundImage( asset('./water2.jpg') , {format : '3DTB'},);
+    Environment.setBackgroundImage( asset('./360Final.jpg') , {format : '3DTB'},);
     // this.componentDidMount();
     this.setState({
       poster: false,
@@ -249,7 +243,7 @@ render() {
     
   // checking if user has won by getting a winning score
   // if yes then showing the winning component
-    if(this.state.score > 200){
+    if(this.state.score > 250){
       AudioModule.stopEnvironmental();
       return(
         <Gamewinner resetgame={this.resetgame}/>
@@ -416,13 +410,13 @@ const styles = StyleSheet.create({
     marginRight: 10,
     }, 
   cpanel:{
-      width: 800,     // Fill the entire surface
-      height: 660,
-      flexDirection: 'column',
-      alignItems: 'center',
-      marginLeft: 10,
-      marginRight: 10,
-      },   
+    width: 800,     // Fill the entire surface
+    height: 660,
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginRight: 10,
+    },   
 });
 
 
