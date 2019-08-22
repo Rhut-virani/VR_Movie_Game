@@ -3,8 +3,10 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       request = require('request'),
       axios = require('axios');
+      dotenv = require('dotenv');
+      PORT = process.env.PORT || 8080;
 
-      const PORT = process.env.PORT || 8080;
+    dotenv.config()
 
 // parse application/x-www-form-urlencoded
     app.use(bodyParser.urlencoded({ extended: false }))
@@ -39,9 +41,10 @@ app.post('/currentmovie', (req,res)=>{
 
 })
 
+console.log(process.env.API_KEY);
 apiCallFunction = (i , j) =>{
     let mp =[];
-    var config = {  params: { language: 'en', api_key: '9fedd0c8b577f3ffc23a28a67e0a144d',page: j },
+    var config = {  params: { language: 'en', api_key: process.env.API_KEY, page: j },
                             headers: { authorization: 'Bearer <<access_token>>', 'content-type': 'application/json;charset=utf-8' },
                             json: true };
         axios.get('https://api.themoviedb.org/4/list/' + movieListArray[i], config)
@@ -51,7 +54,7 @@ apiCallFunction = (i , j) =>{
                     var config = {  params: { append_to_response: 'credits,releases,similar_movies,images', 
                                                 include_image_language: 'en',
                                                 language: 'en-US', 
-                                                api_key: '9fedd0c8b577f3ffc23a28a67e0a144d' },
+                                                api_key: process.env.API_KEY },
                                     headers: { authorization: 'Bearer <<access_token>>', 
                                                 'content-type': 'application/json;charset=utf -8' }};
                     return mp.push(axios.get('https://api.themoviedb.org/3/movie/' + element.id , config));        
@@ -59,14 +62,13 @@ apiCallFunction = (i , j) =>{
                 return Promise.all(mp);
             })
             .then (results=>{
-                // console.log(results.data);
                 let movieDetailsArray = results.map((element)=>{
                     return element.data;
                 })
                 moviedata.push(...movieDetailsArray);
             })
             .catch(error=>{
-                console.log(error);
+                // console.log(error);
             })
 }
 
