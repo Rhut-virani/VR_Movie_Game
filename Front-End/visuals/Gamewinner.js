@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {asset,  Image, StyleSheet, Text, View, Environment, NativeModules, staticResourceURL,} from 'react-360';
-const {VideoModule} = NativeModules;
+import {Text, View, Environment, NativeModules} from 'react-360';
 import GazeButton from "react-360-gaze-button";
 
+const {VideoModule} = NativeModules;
 
 export default class Gamewinner extends React.Component {
   resetwinnergame=()=>{

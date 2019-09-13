@@ -24,22 +24,22 @@ export default class Clues extends React.Component {
         this.state.bounceValue,                 // Animate `bounceValue`
         {
           toValue: 0.9,                       // Animate to smaller size
-          friction: 0.2,                          // Bouncier spring
+          friction: 0.8,                          // Bouncier spring
         }
       ).start();     
   }
 
   render(){
 
-          const moviedata = this.props.moviestate;        
+          const {moviestate, plotValue, wrongAns, correctAns, plothandler, setGazed, timeout} = this.props;
           let randomArray = [];
 
       // Answer Generation by getting similar movies to the current movie 
       // and then ranomising them with the help of Math.floor
-          const ans1Data = [moviedata.title, true];                               // correct answer
-          const ans2Data = [moviedata.similar_movies.results[0].title, false];
-          const ans3Data = [moviedata.similar_movies.results[1].title, false];
-          const ans4Data = [moviedata.similar_movies.results[2].title, false];
+          const ans1Data = [moviestate.title, true];                               // correct answer
+          const ans2Data = [moviestate.similar_movies.results[0].title, false];
+          const ans3Data = [moviestate.similar_movies.results[1].title, false];
+          const ans4Data = [moviestate.similar_movies.results[2].title, false];
 
       // Unrandomised array which would be used to generate a randomised array
           let unrandomArr = [ans1Data, ans2Data, ans3Data, ans4Data];
@@ -55,7 +55,7 @@ export default class Clues extends React.Component {
               <GazeButton
                     key={ind}
                     duration={3000}
-                    onClick={()=>{this.props.setGazed(ele[1])}}
+                    onClick={()=>{setGazed(ele[1])}}
                     style= {styles.vb}
                     render={(remainingTime, isGazed) => (
                       <Text style={styles.ans}>{ele[0]}</Text>
@@ -65,20 +65,20 @@ export default class Clues extends React.Component {
           })
 
       // creating clues from the the current movie 
-          const genre = moviedata.genres[0].name;
-          const releaseDate = moviedata.release_date;
-          const director = moviedata.credits.crew[0].job + ' : ' + moviedata.credits.crew[0].name;
-          const tagline = moviedata.tagline;
-          const release = moviedata.release_date;
+          const genre = moviestate.genres[0].name;
+          const releaseDate = moviestate.release_date;
+          const director = moviestate.credits.crew[0].job + ' : ' + moviestate.credits.crew[0].name;
+          const tagline = moviestate.tagline;
+          const release = moviestate.release_date;
           
       // removing access charactors from the plot 
-          const plotSplit = moviedata.overview.split(' ')
+          const plotSplit = moviestate.overview.split(' ')
           const plotArray =  plotSplit.filter((element,index)=>{return index<15});
           plotArray.push('.....');
           const plot = plotArray.join(' ');
           
       // if a user selects a correct answer then show a right sign on screen
-        if(this.props.correctAns){
+        if(correctAns){
           this.animateImage();
           return(          
           <View style={styles.clueContainer}>
@@ -88,7 +88,7 @@ export default class Clues extends React.Component {
         }  
         
       // if a user selects a wrong answer then show a right sign on screen        
-        else if(this.props.wrongAns){
+        else if(wrongAns){
           this.animateImage();          
           return(          
             <View style={styles.clueContainer}>
@@ -99,7 +99,7 @@ export default class Clues extends React.Component {
 
       // if the time runs out before user can guess an answer 
       // then show the timesup animation
-        else if(this.props.timeout){
+        else if(timeout){
           this.animateImage();          
           return(          
           <View style={styles.clueContainer}>
@@ -119,11 +119,11 @@ export default class Clues extends React.Component {
                   <View style= {styles.que1}><Text style={styles.quetext}>{director}</Text></View>
                   <View style= {styles.que2}><Text style={styles.quetext}>{(tagline)? 'TagLine : ' + tagline : 'No Tagline found'}</Text></View>
                   <View style= {styles.que1}>
-                    {(this.props.plotValue)?
+                    {(plotValue)?
                       <Text style={styles.quetext}>{plot}</Text> :
                       <GazeButton
                         duration={3000}
-                        onClick={this.props.plothandler} 
+                        onClick={plothandler} 
                         render={(remainingTime, isGazed) => (
                         <Text style={styles.quetext}>Click for Movie Plot (10 Points)</Text>
                       )}

@@ -5,8 +5,9 @@ import GazeButton from "react-360-gaze-button";
 export default class Leftpanel extends React.Component {
 
   render() {
+    const {moviestate, poster, posterPointHandler} = this.props;
     //gettng the image paths from the list of movies  
-    let imgurl = (this.props.moviestate.images.backdrops[0])?this.props.moviestate.images.backdrops[0].file_path : this.props.moviestate.images.posters[0].file_path
+    let imgurl = (moviestate.images.backdrops[0])? moviestate.images.backdrops[0].file_path : moviestate.images.posters[0].file_path
     let posterUrl = 'http://image.tmdb.org/t/p/w780' + imgurl;
 
     return (
@@ -14,11 +15,11 @@ export default class Leftpanel extends React.Component {
         <View style={styles.imageWrapper}>
       {/* if the user has made the click on the pooster image then show the poster or show the 
       button and text covering the image */}
-          {(this.props.poster)? 
+          {(poster)? 
             <Image source={{uri: posterUrl}} style={styles.image}/> :
             <GazeButton
                 duration={3000}
-                onClick={this.props.posterPointHandler}
+                onClick={posterPointHandler}
                 style= {styles.vb}
                 render={(remainingTime, isGazed) => (
                 <Text style={styles.imgtext}>Click for Poster Image (100 points) {'\n'} {parseInt(remainingTime/1000)} Sec to Click</Text>

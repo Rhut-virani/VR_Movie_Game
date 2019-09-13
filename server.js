@@ -1,10 +1,15 @@
 const express = require('express'),
-      app = express(),
-      bodyParser = require('body-parser'),
-      request = require('request'),
-      axios = require('axios');
-      dotenv = require('dotenv');
-      PORT = process.env.PORT || 8080;
+    app = express(),
+    bodyParser = require('body-parser'),
+    request = require('request'),
+    axios = require('axios');
+    dotenv = require('dotenv');
+    PORT = process.env.PORT || 8080;
+
+let moviedata= [],
+    movieListArray = [79545,79546,79543,79547],
+    currentmovie = 0,
+    count = 0;
 
     dotenv.config()
 
@@ -24,40 +29,34 @@ app.use(express.static('./Front-End/build'));
 app.use('/static_assets', express.static('./Front-End/static_assets'));
 
 
-let p =[];
-let moviedata= [];
-let movieListArray = [79545,79546,79543,79547];
-let currentmovie = 0;
-
 app.get('/movie', (req, res)=>{
-        res.send(moviedata);
+    res.send(moviedata);
 })
 
 app.post('/currentmovie', (req,res)=>{
-    let count =req.body.count;
+    let count = req.body.count;
 
     currentmovie = (count<moviedata.length)?parseInt(count) + 1 : 0;
     res.status(200).send((currentmovie).toString());
 
 })
 
-console.log(process.env.API_KEY);
 apiCallFunction = (i , j) =>{
     let mp =[];
-    var config = {  params: { language: 'en', api_key: process.env.API_KEY, page: j },
+    const movieListConfig = {  params: { language: 'en', api_key: process.env.API_KEY, page: j },
                             headers: { authorization: 'Bearer <<access_token>>', 'content-type': 'application/json;charset=utf-8' },
                             json: true };
-        axios.get('https://api.themoviedb.org/4/list/' + movieListArray[i], config)
+        axios.get('https://api.themoviedb.org/4/list/' + movieListArray[i], movieListConfig)
              .then(data=>{
                 let movie = data.data.results;
                 movie.forEach(element=>{
-                    var config = {  params: { append_to_response: 'credits,releases,similar_movies,images', 
+                    const movieConfig = {  params: { append_to_response: 'credits,releases,similar_movies,images', 
                                                 include_image_language: 'en',
                                                 language: 'en-US', 
                                                 api_key: process.env.API_KEY },
                                     headers: { authorization: 'Bearer <<access_token>>', 
                                                 'content-type': 'application/json;charset=utf -8' }};
-                    return mp.push(axios.get('https://api.themoviedb.org/3/movie/' + element.id , config));        
+                    return mp.push(axios.get('https://api.themoviedb.org/3/movie/' + element.id , movieConfig));        
                 })
                 return Promise.all(mp);
             })
@@ -68,13 +67,12 @@ apiCallFunction = (i , j) =>{
                 moviedata.push(...movieDetailsArray);
             })
             .catch(error=>{
-                // console.log(error);
+                console.log(error);
             })
 }
 
-let count = 0
 let timer = setInterval(()=>{
-    console.log('running with count =', count);
+    // console.log('running with count =', count);
     if(count < 2){
     apiCallFunction(count , 1);
     count++;

@@ -8,25 +8,23 @@ import {
   Environment,
   NativeModules,
 } from 'react-360';
-import Clues from './Clues';
-import Leftpanel from './Leftpanel';
-import Rightpanel from './Rightpanel';
-import Gamewinner from './Gamewinner';
-import GameOver from './GameOver';
+import Clues from './sections/Clues';
+import Leftpanel from './sections/Leftpanel';
+import Rightpanel from './sections/Rightpanel';
+import Gamewinner from './visuals/Gamewinner';
+import GameOver from './visuals/GameOver';
 import TimerCountdown from 'react-native-timer-countdown';
 
 const {AudioModule} = NativeModules;
 
 
 
-let baseUrl = "http://localhost:8080";
 
 // declaring the component 
 export default class App extends React.Component {
   constructor(){
     super();
     this.state = ({
-      // gazed: false,
       movie: '',
       poster: false,
       currentMovie: 0,
@@ -49,7 +47,7 @@ export default class App extends React.Component {
 // wrong ans reduces the times and score .....
   setGazed = (value) => {
     if(value){
-      const url = baseUrl + '/currentmovie';
+      const url = '/currentmovie';
 // Send the currentmovie counter value to backend to temp store 
 // so even on refresh the currentmovie is at the same value and only changes on 
 // right or wrong Ans.
@@ -86,11 +84,11 @@ export default class App extends React.Component {
     }
     else{ // 
       this.setState({
-        time: (50000 - this.count > 0) ? (60000 - this.count - 10000) : 0 ,
+        time: (this.count < 50) ? (50000 - this.count) : 0 ,
         score: this.state.score - 5,
         wrongAns: true,        
       })
-      this.count = this.count + 10000;
+      this.count += 10000;
       setTimeout(() => {
         this.setState({
           wrongAns: false,
@@ -119,19 +117,18 @@ export default class App extends React.Component {
   componentDidMount (){
     this.spin();     
     setTimeout(() => {
-      fetch(baseUrl + '/movie')
+      fetch('/movie')
         .then((response)=>{
-            console.log()
             return response.json();
         })
         .then( data =>{
           // Here's a list of repos!
-          console.log(data);
           this.setState({
             movie : data,
           })
         })
         .catch(error=>{
+            alert("Server Error, Please Wait...");
             console.log(error);
         });
     }, 5000);
@@ -142,11 +139,10 @@ export default class App extends React.Component {
       this.count = this.count + 1000;
   }
 
-
   // Function which runs on completion of timer and reduces the score 
   // and gets new movie from the state
   complete=()=>{
-    let url = baseUrl + '/currentmovie';
+    let url = '/currentmovie';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({count : this.state.currentMovie}), // data can be `string` or {object}!
@@ -210,7 +206,6 @@ export default class App extends React.Component {
 // also resets the background image to black to a 360 image
   resetgame = ()=>{
     Environment.setBackgroundImage( asset('./360Final.jpg') , {format : '3DTB'},);
-    // this.componentDidMount();
     this.setState({
       poster: false,
       time : 60000,
@@ -234,7 +229,7 @@ render() {
     
   // checking if user has won by getting a winning score
   // if yes then showing the winning component
-    if(this.state.score > 250){
+    if(this.state.score > 500){
       AudioModule.stopEnvironmental();
       return(
         <Gamewinner resetgame={this.resetgame}/>
@@ -260,15 +255,18 @@ render() {
       if(moviestate){
         AudioModule.playEnvironmental({
           source: asset('nature.mp3'), 
-          volume: 0.4, // play at 4/10 original volume
+          volume: 0.1, // play at 1/10 original volume
           });
 
         return (
           <View style={styles.mainpanel}>
-          {/* <Deathstar /> */}
           {/* LeftPanel which shows the posters on the left side of users viewplane  */}
             <View style={styles.panel}>
-              <Leftpanel moviestate = {moviestate}  poster={this.state.poster} posterPointHandler={this.posterPointHandler}/>
+              <Leftpanel 
+                        moviestate = {moviestate}  
+                        poster = {this.state.poster} 
+                        posterPointHandler = {this.posterPointHandler}
+              />
             </View>
 
           {/* timerpanel which shows the timer and score  */}
@@ -286,10 +284,18 @@ render() {
               </View>                      
             </View>
 
-          {/* cpanel which is in the center ofthe view and showa the main content of the app 
+          {/* cpanel which is in the center ofthe view and shows the main content of the app 
           which are the clues and the ans */}
             <View style={styles.cpanel}>
-              <Clues moviestate = {moviestate} movie={this.state.movie} correctAns= {this.state.correctAns} wrongAns={this.state.wrongAns} plotValue={this.state.plotValue} plothandler={this.plothandler} setGazed={this.setGazed}  timeout={this.state.timeout}/>
+              <Clues moviestate = {moviestate} 
+                    movie={this.state.movie} 
+                    correctAns= {this.state.correctAns} 
+                    wrongAns={this.state.wrongAns} 
+                    plotValue={this.state.plotValue} 
+                    plothandler={this.plothandler} 
+                    setGazed={this.setGazed}  
+                    timeout={this.state.timeout}
+              />
             </View>
 
             <View style={styles.timerpanel}>
@@ -299,14 +305,18 @@ render() {
             </View> 
 
             <View style={styles.panel}>
-              <Rightpanel moviestate = {moviestate} img ={this.state.img} currentMovie={this.state.currentMovie} imgPointHandler = {this.imgPointHandler}/>
+              <Rightpanel moviestate = {moviestate} 
+                          img ={this.state.img} 
+                          currentMovie={this.state.currentMovie} 
+                          imgPointHandler = {this.imgPointHandler}
+              />
             </View>
 
           </View>
         );
       }
 
-  // loading animation till the data loads
+  // loading animation till the data loads from the backend
     else{
       return(
           <View style={styles.loadingpanel}>      
