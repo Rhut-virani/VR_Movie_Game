@@ -5,5 +5,7 @@ node_modules/
 *~
 *.log
 *.js.meta
+*.babelrc
+rn-cli.config.js
 node_modules/
-build/
+# Front-End/build/
