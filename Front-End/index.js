@@ -1,7 +1,7 @@
 import React from 'react';
 import {AppRegistry,} from 'react-360';
 import App from './App';
-import Deathstar from './Deathstar';
+import Deathstar from './visuals/Deathstar';
 
 
 

@@ -4,7 +4,7 @@ const express = require('express'),
     request = require('request'),
     axios = require('axios');
     dotenv = require('dotenv');
-    PORT = process.env.PORT || 8080;
+    PORT = process.env.PORT || 9000;
 
 let moviedata= [],
     movieListArray = [79545,79546,79543,79547],
@@ -30,6 +30,7 @@ app.use('/static_assets', express.static('./Front-End/static_assets'));
 
 
 app.get('/movie', (req, res)=>{
+    console.log("hello");
     res.send(moviedata);
 })
 
@@ -72,13 +73,13 @@ apiCallFunction = (i , j) =>{
 }
 
 let timer = setInterval(()=>{
-    // console.log('running with count =', count);
-    if(count < 2){
+    console.log(`running with count ${count}`);
+    if(count < 4){
     apiCallFunction(count , 1);
     count++;
     }
-    else if (count < 4) {
-        apiCallFunction(count-2, 2)
+    else if (count < 8) {
+        apiCallFunction(count-4, 2)
         count++;
     }
     else{
@@ -88,5 +89,5 @@ let timer = setInterval(()=>{
 
 // making sure the server is listening
 app.listen(PORT, ()=>{
-        console.log('server running on' + PORT);
+        console.log(`server running on ${PORT}`);
 })

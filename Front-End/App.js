@@ -15,12 +15,8 @@ import Gamewinner from './visuals/Gamewinner';
 import GameOver from './visuals/GameOver';
 import TimerCountdown from 'react-native-timer-countdown';
 
-const {AudioModule} = NativeModules;
-
-
-
-
-// declaring the component 
+const {AudioModule} = NativeModules,
+      baseUrl = 'http://localhost:9000'
 export default class App extends React.Component {
   constructor(){
     super();
@@ -47,7 +43,7 @@ export default class App extends React.Component {
 // wrong ans reduces the times and score .....
   setGazed = (value) => {
     if(value){
-      const url = '/currentmovie';
+      const url = `${baseUrl}/currentmovie`;
 // Send the currentmovie counter value to backend to temp store 
 // so even on refresh the currentmovie is at the same value and only changes on 
 // right or wrong Ans.
@@ -117,7 +113,7 @@ export default class App extends React.Component {
   componentDidMount (){
     this.spin();     
     setTimeout(() => {
-      fetch('/movie')
+      fetch(`${baseUrl}/movie`)
         .then((response)=>{
             return response.json();
         })
@@ -142,7 +138,7 @@ export default class App extends React.Component {
   // Function which runs on completion of timer and reduces the score 
   // and gets new movie from the state
   complete=()=>{
-    let url = '/currentmovie';
+    let url = `${baseUrl}/currentmovie`;
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({count : this.state.currentMovie}), // data can be `string` or {object}!
