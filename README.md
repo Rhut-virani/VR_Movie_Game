@@ -11,9 +11,12 @@ Consider yourself a movie buff? Test your skills in an immersive environment.
   <img width="500" height="231" src="https://user-images.githubusercontent.com/19146537/65630432-6f363e80-dfa3-11e9-9557-44d047c15a63.gif">
 </p>
 
+
 ## Easy to Start
 
+
 Just open the website on any phone and pop it inside any VR headset. -- https://clue-1985-vr.herokuapp.com/
+
 
 
 
@@ -33,8 +36,9 @@ Earn and use those points towards clues for a hard question.
 
 
 
-Use package.json to install.
+## Made with the React 360 for VR headset with a Node Express server and also using TMDB api.
 
+to play with code or fork your own version run
 ```bash
 npm install
 ```
