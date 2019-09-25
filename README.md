@@ -1,6 +1,9 @@
 # Clue
+<p align="center">
+<b>React 360</b> front-end and a <b>Node Express</b> server with <b>TMDB</b> api.
+<p>
 
-Clue , is a Virtual Reality game of movie Trivia. It gives you Clues for each movie and the player has to guess the movie name. You have other visual Clues which you can buy on your points. 
+Clue , is a Virtual Reality game of movie Trivia. It gives you Clues for each movie and the player has to guess the movie name. You have other visual Clues which you can buy with your points. 
 
 
 ## Movie Buff ??
@@ -35,8 +38,7 @@ Earn and use those points towards clues for a hard question.
 
 
 
-
-## Made with the React 360 for VR headset with a Node Express server and also using TMDB api.
+## Install
 
 to play with code or fork your own version run
 ```bash
