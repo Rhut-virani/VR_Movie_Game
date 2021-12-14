@@ -74,12 +74,11 @@ export default class App extends React.Component {
 				this.setState({
 					correctAnswer: false,
 				});
-			}, 1200);
+			}, 1000);
 		} else {
 			//
-			console.log(this.count);
 			this.setState({
-				time: this.count < 50000 ? 50000 - this.count : 0,
+				time: this.count < 50000 ? 50000 - this.count : 1000,
 				score: this.state.score - 5,
 				wrongAnswer: true,
 			});
@@ -91,7 +90,7 @@ export default class App extends React.Component {
 				if (this.state.time === 0) {
 					this.complete();
 				}
-			}, 1200);
+			}, 1000);
 		}
 	};
 
