@@ -11,7 +11,7 @@
 		"test": "jest"
 	},
 	"dependencies": {
-		"axios": "^0.18.1",
+		"axios": "^0.21.2",
 		"react": "16.0.0",
 		"react-360": "~1.0.0",
 		"react-360-gaze-button": "^1.0.0",
