@@ -30,7 +30,6 @@ app.use('/static_assets', express.static('./Front-End/static_assets'));
 
 
 app.get('/movie', (req, res)=>{
-    console.log("hello");
     res.send(moviedata);
 })
 
